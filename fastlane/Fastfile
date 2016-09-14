@@ -8,7 +8,7 @@ platform :ios do
   end
 
   desc "Runs all the tests"
-  lane :test do
+  lane :push do
   	scan(
 	  workspace: "DangerPoc.xcworkspace",
 	  scheme: "DangerPoc",
