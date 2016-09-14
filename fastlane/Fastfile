@@ -1,0 +1,27 @@
+fastlane_version "1.70.0"
+
+default_platform :ios
+
+platform :ios do
+  before_all do
+
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+  	scan(
+	  workspace: "DangerPoc.xcworkspace",
+	  scheme: "DangerPoc",
+	  clean: true,
+	  code_coverage: true,
+	  skip_build: true
+	)
+
+	xcov(
+	  workspace: "DangerPoc.xcworkspace",
+	  scheme: "DangerPoc"
+	)
+
+  danger
+  end
+end
