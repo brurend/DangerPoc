@@ -18,7 +18,7 @@ platform :ios do
 	)
 
 	xcov(
-	  workspace: "DangerPoc.xcworkspace",
+	  project: "DangerPoc.xcodeproj",
 	  scheme: "DangerPoc"
 	)
 

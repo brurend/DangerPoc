@@ -412,6 +412,7 @@
 				95F483D01D89DE9300EDD548 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		95F483D11D89DE9300EDD548 /* Build configuration list for PBXNativeTarget "DangerPocTests" */ = {
 			isa = XCConfigurationList;
@@ -420,6 +421,7 @@
 				95F483D31D89DE9300EDD548 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
