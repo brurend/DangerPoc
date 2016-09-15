@@ -10,7 +10,7 @@ platform :ios do
   desc "Runs all the tests"
   lane :push do
   	scan(
-	  workspace: "DangerPoc.xcworkspace",
+	  project: "DangerPoc.xcodeproj",
 	  scheme: "DangerPoc",
 	  clean: true,
 	  code_coverage: true,
