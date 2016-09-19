@@ -16,8 +16,8 @@ end
 
 # Fail the build based on code coverage
 xcov.report(
-  project: "ContainerManager.xcodeproj",
-  scheme: "ContainerManager",
+  project: "DangerPoc.xcodeproj",
+  scheme: "DangerPoc",
   minimum_coverage_percentage: 5.0
 )
 
