@@ -2,4 +2,5 @@ language: objective-c
 osx_image: xcode8
 script:
     - set -o pipefail
+    - rm -rf ~/Library/Developer/Xcode/DerivedData/* && rm -frd ~/Library/Caches/com.apple.dt.Xcode/*
     - bundle exec fastlane push
