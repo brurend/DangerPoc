@@ -15,10 +15,10 @@ if has_app_changes && !has_test_changes
 end
 
 # Fail the build based on code coverage
-xcov.report(
-  project: "DangerPoc.xcodeproj",
-  scheme: "DangerPoc",
-  minimum_coverage_percentage: 50.0
-)
+#xcov.report(
+#  project: "DangerPoc.xcodeproj",
+#  scheme: "DangerPoc",
+#  minimum_coverage_percentage: 50.0
+#)
 
 commit_lint.check warn: :all
