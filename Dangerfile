@@ -11,7 +11,7 @@ has_app_changes = !git.modified_files.grep(/DangerPoc/).empty?
 has_test_changes = !git.modified_files.grep(/DangerPocTests/).empty?
 
 if has_app_changes && !has_test_changes
-  fail "Tests were not updated"
+  warn "Tests were not updated"
 end
 
 # Fail the build based on code coverage
