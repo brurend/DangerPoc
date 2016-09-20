@@ -24,6 +24,12 @@ class DangerPocTests: XCTestCase {
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        
+        let vc = storyboard.instantiateViewController(withIdentifier: "ViewController")
+        
+        XCTAssertNotNil(vc)
     }
     
     func testPerformanceExample() {
