@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>DangerPoc by brurend</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>DangerPoc</h1>
+          <h2>Danger: pare de dizer &quot;Você esqueceu de...&quot; no Code Review</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/brurend/DangerPoc/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/brurend/DangerPoc/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/brurend/DangerPoc" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p>Uma prática muito importante no desenvolvimento de software em equipe é o Code Review, usado para garantir a qualidade do código, ajudar a disseminar conhecimento entre os membros do time e evitar que erros que não foram pegos pelo processo automatizado passem para as branchs estáveis.</p>
+
+<p>O processo de Code Review leva tempo e exige dedicação dos envolvidos, mas apesar de ser muito útil, é comum que as pessoas se esqueçam ou às vezes nem pensem em checar detalhes que deveriam ser corrigidos durante o Code Review.</p>
+
+<p>Felizmente, isso não é mais um problema. Os criadores do Cocoapods e Fastlane, ferramentas já bem conhecidas no mundo do desenvolvimento iOS, criaram a Danger.</p>
+
+<p>Danger é uma ferramenta escrita em Ruby que veio para auxiliar o processo de Code Review para todos os desenvolvedores, independente da plataforma. Ela garante que tudo que foi definido que seria analisado durante o Code Review seja de fato analisado. E, a melhor parte, de forma automatizada, integrada com o servidor de integração contínua e a plataforma de controle de versão.</p>
+
+<p>Durante o processo de build do projeto a Danger vai analisar as regras definidas em um script Ruby e permitir que o time codifique suas normas de Code Review, deixando que as pessoas usem seu tempo para pensar em tarefas mais complicadas. De acordo com o que foi definido, a Danger vai comentar nos pull requests o que está de acordo ou não, permitindo também quebrar o processo de build caso alguma regra mais importante seja violada. Conforme as correções vão sendo feitas as mensagens são alteradas para deixar a evolução que ocorreu transparente .</p>
+
+<p>Implementar a Danger em seu projeto é bem simples, basta cinco passos:</p>
+
+<ul>
+<li><p>Instale a gem 'danger' no projeto. É recomendável que isso seja feito utilizando o Bundler, um gerenciador de dependências Ruby. Com a gem instalada você pode utilizar o comando <code>Danger init</code>, que irá guiá-lo pelos próximos passos.</p></li>
+<li><p>Crie um arquivo vazio chamado Dangerfile. É neste arquivo que será escrito o script em Ruby que ditará as regras seguidas para o seu Code Review. Caso você não esteja familiarizado com Ruby não se preocupe, apesar de ser a linguagem utilizada não é necessário conhecimento prévio, basta conhecer conceitos básicos de programação. Além disso, a escrita do script é feita de forma quase natural.</p></li>
+<li><p>Este passo não é necessário para utilizar a Danger, mas sim para que ela possa comentar diretamente nos Pull Requests. Crie uma conta em sua plataforma de controle de versão (Github, Gitlab, Bitbucket Server). Esta conta será usada como um bot pela Danger para comentar nos Pull Requests.
+A conta é criada como uma conta de usuário normal e a configuração para ser usada como bot vária de uma plataforma para outra. Sugiro que leia a documentação sobre o assunto na plataforma que for usar.</p></li>
+<li><p>Adicione ao seu servidor de integração contínua uma variável de ambiente chamada <code>DANGER_GITHUB_API_TOKEN</code>. O valor desta variável é fornecido pela plataforma de controle de versão e varia de uma para a outra, mas pode ser facilmente achada utilizando a documentação da plataforma.</p></li>
+<li><p>Adicione ao processo de build de seu servidor de integração contínua a Danger. Novamente, a forma como isto deve ser feito pode variar de um servidor para o outro, mas o que deve ser feito é adicionar o comando <code>danger</code> (ou <code>bundle exec danger</code>) à sua pipeline e pronto, já está tudo preparado.</p></li>
+</ul>
+
+<h1>
+<a id="danger-em-uso" class="anchor" href="#danger-em-uso" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Danger em uso</h1>
+
+<p>Aqui temos um exemplo de uma Dangerfile, agora vamos explicar o que cada parte do script está fazendo.</p>
+
+<p><img src="DangerPoc/screenshots/Dangerfile.png" alt="DangerPoc/screenshots/Dangerfile.png"></p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c"># Warn when there is a big PR</span>
+warn(<span class="pl-s"><span class="pl-pds">"</span>Big PR<span class="pl-pds">"</span></span>) <span class="pl-k">if</span> git.lines_of_code <span class="pl-k">&gt;</span> <span class="pl-c1">5000</span></pre></div>
+
+<p>Um aviso é dado se o Pull Request for muito grande e estiver com mais linhas do que o definido.</p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c"># Force tests to be made within all PRs that changes files</span>
+has_app_changes <span class="pl-k">=</span> <span class="pl-k">!</span>git.modified_files.grep(<span class="pl-sr"><span class="pl-pds">/</span>DangerPoc<span class="pl-pds">/</span></span>).empty?
+has_test_changes <span class="pl-k">=</span> <span class="pl-k">!</span>git.modified_files.grep(<span class="pl-sr"><span class="pl-pds">/</span>DangerPocTests<span class="pl-pds">/</span></span>).empty?
+
+<span class="pl-k">if</span> has_app_changes <span class="pl-k">&amp;&amp;</span> <span class="pl-k">!</span>has_test_changes
+  fail <span class="pl-s"><span class="pl-pds">"</span>Tests were not updated<span class="pl-pds">"</span></span>
+<span class="pl-k">end</span></pre></div>
+
+<p>Define duas variáveis locais e checa se tiveram arquivos modificados mas não foram adicionados testes destes arquivos. Neste caso a build irá falhar, pois viola uma regra definida como primordial por este time.</p>
+
+<p><img src="DangerPoc/screenshots/PR_Tests.png" alt="screenshots/PR_Tests.png"></p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c"># Make a note about contributors not in the organization</span>
+<span class="pl-k">unless</span> github.api.organization_member?(<span class="pl-s"><span class="pl-pds">'</span>DangerPoc<span class="pl-pds">'</span></span>, github.pr_author)
+  message <span class="pl-s"><span class="pl-pds">"</span>@<span class="pl-pse">#{</span><span class="pl-s1">github.pr_author</span><span class="pl-pse"><span class="pl-s1">}</span></span> is not a contributor yet<span class="pl-pds">"</span></span>
+<span class="pl-k">end</span></pre></div>
+
+<p>Aparece uma mensagem se o autor do Pull Request não for um colaborador do projeto.</p>
+
+<p><img src="DangerPoc/screenshots/Contributor.png" alt="screenshots/Contributor.png"></p>
+
+<div class="highlight highlight-source-ruby"><pre><span class="pl-c"># Fail the build based on code coverage</span>
+xcov.report(
+  <span class="pl-c1">workspace:</span> <span class="pl-s"><span class="pl-pds">"</span>DangerPoc.xcworkspace<span class="pl-pds">"</span></span>,
+  <span class="pl-c1">scheme:</span> <span class="pl-s"><span class="pl-pds">"</span>DangerPoc<span class="pl-pds">"</span></span>,
+  <span class="pl-c1">minimum_coverage_percentage:</span> <span class="pl-c1">50.0</span>
+)</pre></div>
+
+<p>Aqui está sendo utilizado um plugin para a Danger. Xcov é uma ferramenta usada para geração de relatório de cobertura de testes em iOS.
+Este plugin permite que a Danger falhe a build caso a cobertura de código esteja abaixo do esperado, que neste caso é de 50%.</p>
+
+<p><img src="DangerPoc/screenshots/Contributor_CodeCoverageUnder.png" alt="screenshots/Contributor_CodeCoverageUnder.png">
+<img src="DangerPoc/screenshots/CodeCoverageOk.png" alt="screenshots/CodeCoverageOk.png">
+<img src="DangerPoc/screenshots/Xcov.png" alt="screenshots/Xcov.png"></p>
+
+<div class="highlight highlight-source-ruby"><pre>commit_lint.check <span class="pl-c1">warn:</span> <span class="pl-c1">:all</span></pre></div>
+
+<p>Outro plugin muito útil para garantir que as mensagens de commit estejam sendo escritas de forma clara e respeitando os guidelines conhecidos de git.</p>
+
+<p><img src="DangerPoc/screenshots/CommitLintWarning.png" alt="screenshots/CommitLintWarning.png">
+<img src="DangerPoc/screenshots/CommitLintOk.png" alt="screenshots/CommitLintOk.png"></p>
+
+<h1>
+<a id="conclusão" class="anchor" href="#conclus%C3%A3o" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Conclusão</h1>
+
+<p>Danger ainda é uma ferramenta nova, mas está em crescimento e com um potencial enorme. Code Review é algo presente diariamente na vida de quase todos os desenvolvedores e uma ferramenta que possa facilitar e melhorar este processo de forma simples tem tudo para ser incorporada por todos nós em nossos processos de build.</p>
+
+<p>Obs: Danger é referida como "a/ela" apesar de ser uma ferramenta, pois é uma homenagem dos criadores para Gem "Danger" McShane, que esteve envolvida com o processo de concepção e com a idealização do projeto em si.</p>
+
+<h3>
+<a id="referências" class="anchor" href="#refer%C3%AAncias" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Referências:</h3>
+
+<p><a href="http://danger.systems">http://danger.systems</a></p>
+
+<p><a href="https://github.com/danger/danger">https://github.com/danger/danger</a></p>
+        </section>
+
+        <footer>
+          DangerPoc is maintained by <a href="https://github.com/brurend">brurend</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
