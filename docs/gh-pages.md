@@ -25,7 +25,7 @@ A conta é criada como uma conta de usuário normal e a configuração para ser 
 
 Aqui temos um exemplo de uma Dangerfile, agora vamos explicar o que cada parte do script está fazendo.
 
-![screenshots/Dangerfile.png](DangerPoc/docs/screenshots/Dangerfile.png)
+![screenshots/Dangerfile.png](screenshots/Dangerfile.png)
 
 ```Ruby
 # Warn when there is a big PR
