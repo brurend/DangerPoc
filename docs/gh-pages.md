@@ -25,7 +25,7 @@ A conta é criada como uma conta de usuário normal e a configuração para ser 
 
 Aqui temos um exemplo de uma Dangerfile, agora vamos explicar o que cada parte do script está fazendo.
 
-![screenshots/Dangerfile.png](DangerPoc/screenshots/Dangerfile.png)
+![screenshots/Dangerfile.png](DangerPoc/docs/screenshots/Dangerfile.png)
 
 ```Ruby
 # Warn when there is a big PR
@@ -44,7 +44,7 @@ end
 ```
 Define duas variáveis locais e checa se tiveram arquivos modificados mas não foram adicionados testes destes arquivos. Neste caso a build irá falhar, pois viola uma regra definida como primordial por este time.
 
-![screenshots/PR_Tests.png](DangerPoc/screenshots/PR_Tests.png)
+![screenshots/PR_Tests.png](DangerPoc/docs/screenshots/PR_Tests.png)
 
 ```Ruby
 # Make a note about contributors not in the organization
@@ -54,7 +54,7 @@ end
 ```
 Aparece uma mensagem se o autor do Pull Request não for um colaborador do projeto.
 
-![screenshots/Contributor.png](DangerPoc/screenshots/Contributor.png)
+![screenshots/Contributor.png](DangerPoc/docs/screenshots/Contributor.png)
 
 ```Ruby
 # Fail the build based on code coverage
@@ -67,17 +67,17 @@ xcov.report(
 Aqui está sendo utilizado um plugin para a Danger. Xcov é uma ferramenta usada para geração de relatório de cobertura de testes em iOS.
 Este plugin permite que a Danger falhe a build caso a cobertura de código esteja abaixo do esperado, que neste caso é de 50%.
 
-![screenshots/Contributor_CodeCoverageUnder.png](DangerPoc/screenshots/Contributor_CodeCoverageUnder.png)
-![screenshots/CodeCoverageOk.png](DangerPoc/screenshots/CodeCoverageOk.png)
-![screenshots/Xcov.png](DangerPoc/screenshots/Xcov.png)
+![screenshots/Contributor_CodeCoverageUnder.png](DangerPoc/docs/screenshots/Contributor_CodeCoverageUnder.png)
+![screenshots/CodeCoverageOk.png](DangerPoc/docs/screenshots/CodeCoverageOk.png)
+![screenshots/Xcov.png](DangerPoc/docs/screenshots/Xcov.png)
 
 ```Ruby
 commit_lint.check warn: :all
 ```
 Outro plugin muito útil para garantir que as mensagens de commit estejam sendo escritas de forma clara e respeitando os guidelines conhecidos de git.
 
-![screenshots/CommitLintWarning.png](DangerPoc/screenshots/CommitLintWarning.png)
-![screenshots/CommitLintOk.png](DangerPoc/screenshots/CommitLintOk.png)
+![screenshots/CommitLintWarning.png](DangerPoc/docs/screenshots/CommitLintWarning.png)
+![screenshots/CommitLintOk.png](DangerPoc/docs/screenshots/CommitLintOk.png)
 
 # Conclusão
 
